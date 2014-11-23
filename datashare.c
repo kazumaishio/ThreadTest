@@ -4,6 +4,7 @@
 #define THREAD_NUM 2
 #define DATA_NUM 10
 
+
 typedef struct _thread_arg
 {
   int thread_no;
@@ -11,7 +12,7 @@ typedef struct _thread_arg
   pthread_mutex_t *mutex;
 } thread_arg_t;
 
-void thread_func(void *arg)
+void *thread_func(void *arg)
 {
   thread_arg_t* targ = (thread_arg_t *)arg;
   int i,result;
@@ -48,8 +49,8 @@ int main()
     targ[i].mutex = &mutex;
     pthread_create(&handle[i],
                    NULL,
-                   (void*)thread_func,
-                   (void*)&targ[i]);
+                   &thread_func,
+                   &targ[i]);
   }
   for(i=0;i<THREAD_NUM;i++)
     pthread_join(handle[i],NULL);
